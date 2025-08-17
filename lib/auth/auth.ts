@@ -1,27 +1,26 @@
-type AuthInterface = {
-  isLoggedIn: boolean;
-  login: (token: string) => void;
-  logout: () => void;
-  subscribe: (listener: (isLoggedIn: boolean) => void) => () => void;
-  getAuthState: () => boolean;
-  destroy: () => void;
-};
+import { AuthInterface, AuthOptions, ListenerType } from "./auth.type";
 
-type ListenerType = (isLoggedIn: boolean) => void;
-
-class Auth implements AuthInterface {
+/**
+ * Auth class for managing authentication state.
+ * This class provides methods for logging in, logging out, and subscribing to authentication state changes.
+ * It uses localStorage to persist the authentication state across page reloads.
+ * @param {AuthOptions} options - Optional configuration for the Auth instance.
+ */
+export class Auth implements AuthInterface {
   isLoggedIn: boolean;
   private listeners: Set<ListenerType>;
   private handleStorageChange: (event: StorageEvent) => void;
   private isClient: boolean;
+  private TOKEN_KEY: string;
 
-  constructor() {
+  constructor({ tokenKey }: AuthOptions = {}) {
     this.isClient = typeof window !== "undefined";
     this.isLoggedIn = this.getStoredAuthState();
     this.listeners = new Set();
+    this.TOKEN_KEY = tokenKey || "token";
 
     this.handleStorageChange = (event: StorageEvent) => {
-      if (event.key === "token") {
+      if (event.key === this.TOKEN_KEY) {
         this.updateAuthState(!!event.newValue);
       }
     };
@@ -84,7 +83,7 @@ class Auth implements AuthInterface {
 
   login(token: string): Promise<boolean> {
     return new Promise((resolve) => {
-      const success = this.setStorageItem("token", token);
+      const success = this.setStorageItem(this.TOKEN_KEY, token);
       if (success) {
         this.updateAuthState(true);
       }
@@ -94,7 +93,7 @@ class Auth implements AuthInterface {
 
   logout(): Promise<boolean> {
     return new Promise((resolve) => {
-      const success = this.removeStorageItem("token");
+      const success = this.removeStorageItem(this.TOKEN_KEY);
       if (success) {
         this.updateAuthState(false);
       }
@@ -135,6 +134,6 @@ class Auth implements AuthInterface {
   }
 }
 
-export const createAuth = () => new Auth();
-
-export default createAuth;
+export const createAuth = (options?: AuthOptions) => {
+  return new Auth(options);
+};
