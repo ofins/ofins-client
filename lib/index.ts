@@ -1,3 +1,3 @@
-export * from "./utils";
-// export { default } from "./auth/auth";
-export * from "./auth";
+// Named exports for better tree-shaking
+export { test } from "./utils";
+export { createAuth } from "./auth";

@@ -3,8 +3,13 @@
   "version": "0.1.0",
   "description": "A package that provides useful utilities for frontend web applications",
   "type": "module",
+  "sideEffects": false,
   "main": "dist/lib/index.js",
   "types": "dist/lib/index.d.ts",
+  "files": [
+    "dist/lib/**/*",
+    "README.md"
+  ],
   "exports": {
     ".": {
       "types": "./dist/lib/index.d.ts",

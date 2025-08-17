@@ -1,0 +1,35 @@
+# Source files - only ship compiled code
+lib/
+src/
+
+# TypeScript config files
+tsconfig*.json
+*.tsbuildinfo
+
+# Development files
+.env*
+.nvmrc
+.vscode/
+.idea/
+
+# Testing
+coverage/
+.nyc_output/
+jest.config.*
+**/*.test.*
+**/*.spec.*
+tests/
+
+# Build artifacts (keep only what's needed)
+node_modules/
+*.log
+.DS_Store
+
+# Documentation that shouldn't be in package
+docs/
+examples/
+.github/
+
+# Linting
+.eslintrc*
+.prettierrc*
