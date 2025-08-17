@@ -19,6 +19,7 @@
   "scripts": {
     "build": "tsc -b",
     "test": "echo \"Error: no test specified\" && exit 1",
+    "prepublishOnly": "npm run build",
     "lint": "npm run type:check && npm run prettier:check && npm run lint:code",
     "lint:fix": "npm run prettier:fix && npm run lint:code -- --fix"
   },
@@ -29,6 +30,7 @@
     "@swc/jest": "^0.2.39",
     "@types/jest": "^29.5.12",
     "@types/node": "^20.12.4",
+    "@types/react": "^19.1.10",
     "esbuild": "^0.25.9",
     "eslint": "^9.30.1",
     "eslint-plugin-unicorn": "^59.0.1",

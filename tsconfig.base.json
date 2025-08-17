@@ -14,7 +14,8 @@
     "declarationMap": true,
     "resolveJsonModule": true,
     "composite": true,
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "jsx": "react-jsx"
   },
   "exclude": [
     "**/node_modules",
