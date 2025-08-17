@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "lib": ["es2023", "dom"],
+    "module": "esnext",
+    "target": "es2022",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "sourceMap": true,
+    "incremental": true,
+    "noFallthroughCasesInSwitch": true,
+    "declaration": true,
+    "declarationMap": true,
+    "resolveJsonModule": true,
+    "composite": true,
+    "moduleResolution": "node"
+  },
+  "exclude": [
+    "**/node_modules",
+    "**/tests",
+    "**/build",
+    "**/dist",
+    "**/*.spec.*",
+    "**/*.test.*",
+    "**/jest.config.ts"
+  ]
+}
