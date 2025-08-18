@@ -1,6 +1,6 @@
 {
   "name": "@ofins/client",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A package that provides useful utilities for frontend web applications",
   "type": "module",
   "sideEffects": false,
@@ -20,10 +20,10 @@
     "build": "tsc -b",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:watch": "npm run build -- --watch",
-    "publish": "npm publish --access public",
     "bump:minor": "npm version minor",
     "bump:patch": "npm version patch",
     "prepublishOnly": "npm run build",
+    "publish": "npm publish --access public",
     "lint": "npm run type:check && npm run prettier:check && npm run lint:code",
     "lint:fix": "npm run prettier:fix && npm run lint:code -- --fix"
   },
