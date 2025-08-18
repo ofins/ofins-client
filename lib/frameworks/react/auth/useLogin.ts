@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
 import { useAuth } from "./useAuth";
 
 export interface LoginCredentials {
@@ -58,14 +58,14 @@ export interface UseLoginReturn {
 
   // Status
   isLoading: boolean;
-  isValid: boolean;
+  isValid: () => boolean;
   errors: Record<string, string>;
 
   // Auth state
   isLoggedIn: boolean;
 
   // Utility methods
-  validateCredentials: () => boolean;
+  validateCredentials: (credentials: LoginCredentials) => boolean;
   clearErrors: () => void;
 }
 
@@ -75,15 +75,15 @@ const defaultValidate = (
   const errors: Record<string, string> = {};
 
   if (!credentials.email) {
-    errors.email = "Email is required";
+    errors.message = "Email is required";
   } else if (!/\S+@\S+\.\S+/.test(credentials.email)) {
-    errors.email = "Email is invalid";
+    errors.message = "Email is invalid";
   }
 
   if (!credentials.password) {
-    errors.password = "Password is required";
+    errors.message = "Password is required";
   } else if (credentials.password.length < 6) {
-    errors.password = "Password must be at least 6 characters";
+    errors.message = "Password must be at least 6 characters";
   }
 
   return Object.keys(errors).length > 0 ? errors : null;
@@ -154,123 +154,108 @@ export const useLogin = (options: UseLoginOptions = {}): UseLoginReturn => {
   const setCredentials = useCallback(
     (newCredentials: Partial<LoginCredentials>) => {
       setCredentialsState((prev) => ({ ...prev, ...newCredentials }));
-      // Clear related errors when user types
-      setErrors((prev) => {
-        const newErrors = { ...prev };
-        Object.keys(newCredentials).forEach((key) => {
-          delete newErrors[key];
+
+      const validate = validateCredentials(credentials);
+      if (validate) {
+        setErrors((prev) => {
+          const newErrors = { ...prev };
+          Object.keys(newCredentials).forEach((key) => {
+            delete newErrors[key];
+          });
+          return newErrors;
         });
-        return newErrors;
-      });
+      }
     },
-    []
+    [credentials]
   );
 
-  const setEmail = useCallback(
-    (email: string) => {
-      setCredentials({ email });
-    },
-    [setCredentials]
-  );
+  const setEmail = (email: string) => {
+    setCredentials({ email });
+  };
 
-  const setPassword = useCallback(
-    (password: string) => {
-      setCredentials({ password });
-    },
-    [setCredentials]
-  );
+  const setPassword = (password: string) => {
+    setCredentials({ password });
+  };
 
-  const validateCredentials = useCallback((): boolean => {
+  const validateCredentials = (credentials: LoginCredentials): boolean => {
     const validationErrors = validate(credentials);
-    if (validationErrors) {
-      setErrors(validationErrors);
-      return false;
-    }
-    setErrors({});
-    return true;
-  }, [credentials, validate]);
+    setErrors(validationErrors || {});
+    return !validationErrors || Object.keys(validationErrors).length === 0;
+  };
 
-  const clearErrors = useCallback(() => {
+  const clearErrors = () => {
     setErrors({});
-  }, []);
+  };
 
-  const reset = useCallback(() => {
+  const reset = () => {
     setCredentialsState({
       email: initialValues.email || "",
       password: initialValues.password || "",
     });
     setErrors({});
     setIsLoading(false);
-  }, [initialValues]);
+  };
 
-  const handleSubmit = useCallback(
-    async (e?: React.FormEvent) => {
-      console.log("Form submitted");
-      console.log(e);
-      e?.preventDefault();
+  const handleSubmit = async (e?: React.FormEvent) => {
+    e?.preventDefault();
+    // Always validate before proceeding, even if there are existing errors
+    const validationErrors = validate(credentials);
+    if (validationErrors) {
+      setErrors(validationErrors);
+      return;
+    }
 
-      if (!validateCredentials()) {
-        return;
-      }
+    // Clear any existing errors since validation passed
+    setErrors({});
 
-      setIsLoading(true);
-      setErrors({});
+    setIsLoading(true);
 
-      try {
-        let token: string;
+    try {
+      let token: string;
 
-        if (onLogin) {
-          // Use custom login function
-          const result = await onLogin(credentials);
-          if (typeof result === "string") {
-            token = result;
-          } else {
-            token = result.token;
-            onSuccess?.(result);
-          }
+      if (onLogin) {
+        // Use custom login function
+        const result = await onLogin(credentials);
+        if (typeof result === "string") {
+          token = result;
         } else {
-          // This would be a default implementation - you might want to throw an error instead
-          throw new Error("No login handler provided");
+          token = result.token;
+          onSuccess?.(result);
         }
-
-        // Use the auth system to store the token
-        authLogin(token);
-
-        if (
-          typeof onLogin === "undefined" ||
-          typeof (await onLogin(credentials)) === "string"
-        ) {
-          onSuccess?.(token);
-        }
-
-        if (clearOnSuccess) {
-          reset();
-        }
-      } catch (error) {
-        const errorMessage =
-          error instanceof Error ? error.message : "Login failed";
-        setErrors({ general: errorMessage });
-        onError?.(error instanceof Error ? error : new Error(errorMessage));
-      } finally {
-        setIsLoading(false);
+      } else {
+        throw new Error("No login handler provided");
       }
-    },
-    [
-      credentials,
-      validateCredentials,
-      onLogin,
-      authLogin,
-      onSuccess,
-      onError,
-      clearOnSuccess,
-      reset,
-    ]
-  );
 
-  const isValid =
-    Object.keys(errors).length === 0 &&
-    credentials.email.length > 0 &&
-    credentials.password.length > 0;
+      authLogin(token);
+
+      if (
+        typeof onLogin === "undefined" ||
+        typeof (await onLogin(credentials)) === "string"
+      ) {
+        onSuccess?.(token);
+      }
+
+      if (clearOnSuccess) {
+        reset();
+      }
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : "Login failed";
+      setErrors({ general: errorMessage });
+      onError?.(error instanceof Error ? error : new Error(errorMessage));
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Dynamic validation - check if current form state would pass validation
+  const isValid = (): boolean => {
+    if (credentials.email.length === 0 || credentials.password.length === 0) {
+      return false;
+    }
+    const validationErrors = validate(credentials);
+    return !validationErrors || Object.keys(validationErrors).length === 0;
+  };
 
   return {
     // Form state

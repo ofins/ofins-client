@@ -19,6 +19,10 @@
   "scripts": {
     "build": "tsc -b",
     "test": "echo \"Error: no test specified\" && exit 1",
+    "build:watch": "npm run build -- --watch",
+    "publish": "npm publish --access public",
+    "bump:minor": "npm version minor",
+    "bump:patch": "npm version patch",
     "prepublishOnly": "npm run build",
     "lint": "npm run type:check && npm run prettier:check && npm run lint:code",
     "lint:fix": "npm run prettier:fix && npm run lint:code -- --fix"
