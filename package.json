@@ -24,7 +24,6 @@
     "bump:patch": "npm version patch",
     "version:minor-alpha": "npm version preminor --preid=alpha --no-git-tag-version",
     "prepublishOnly": "npm run build",
-    "publish": "npm publish --access public",
     "lint": "npm run type:check && npm run prettier:check && npm run lint:code",
     "lint:fix": "npm run prettier:fix && npm run lint:code -- --fix"
   },
