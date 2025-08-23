@@ -62,6 +62,7 @@ export interface UseRegisterReturn {
   credentials: RegisterCredentials;
   setCredentials: (credentials: Partial<RegisterCredentials>) => void;
   setEmail: (email: string) => void;
+  setUsername: (username: string) => void;
   setPassword: (password: string) => void;
   setConfirmPassword: (confirmPassword: string) => void;
   setFirstName: (firstName: string) => void;
@@ -147,6 +148,7 @@ export const useRegister = (
 
   const [credentials, setCredentialsState] = useState<RegisterCredentials>({
     email: initialValues.email || "",
+    username: initialValues.username || "",
     password: initialValues.password || "",
     confirmPassword: initialValues.confirmPassword || "",
     firstName: initialValues.firstName || "",
@@ -174,6 +176,13 @@ export const useRegister = (
   const setEmail = useCallback(
     (email: string) => {
       setCredentials({ email });
+    },
+    [setCredentials]
+  );
+
+  const setUsername = useCallback(
+    (username: string) => {
+      setCredentials({ username });
     },
     [setCredentials]
   );
@@ -223,6 +232,7 @@ export const useRegister = (
   const reset = useCallback(() => {
     setCredentialsState({
       email: initialValues.email || "",
+      username: initialValues.username || "",
       password: initialValues.password || "",
       confirmPassword: initialValues.confirmPassword || "",
       firstName: initialValues.firstName || "",
@@ -306,6 +316,7 @@ export const useRegister = (
     credentials,
     setCredentials,
     setEmail,
+    setUsername,
     setPassword,
     setConfirmPassword,
     setFirstName,
