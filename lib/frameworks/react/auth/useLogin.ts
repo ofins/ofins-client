@@ -91,6 +91,7 @@ const defaultValidate = (
 
 /**
  * A comprehensive React hook for handling login functionality
+ * - Currently supports email/password login
  *
  * @example
  * ```tsx

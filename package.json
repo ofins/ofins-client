@@ -1,6 +1,6 @@
 {
   "name": "@ofins/client",
-  "version": "0.1.1",
+  "version": "0.2.0-alpha.0",
   "description": "A package that provides useful utilities for frontend web applications",
   "type": "module",
   "sideEffects": false,
@@ -22,6 +22,7 @@
     "build:watch": "npm run build -- --watch",
     "bump:minor": "npm version minor",
     "bump:patch": "npm version patch",
+    "version:minor-alpha": "npm version preminor --preid=alpha --no-git-tag-version",
     "prepublishOnly": "npm run build",
     "publish": "npm publish --access public",
     "lint": "npm run type:check && npm run prettier:check && npm run lint:code",

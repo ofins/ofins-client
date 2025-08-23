@@ -3,6 +3,7 @@ import { useAuth } from "./useAuth";
 
 export interface RegisterCredentials {
   email: string;
+  username?: string;
   password: string;
   confirmPassword: string;
   firstName?: string;
@@ -167,7 +168,7 @@ export const useRegister = (
         return newErrors;
       });
     },
-    []
+    [credentials]
   );
 
   const setEmail = useCallback(
