@@ -1,6 +1,6 @@
 {
   "name": "@ofins/client",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "A package that provides useful utilities for frontend web applications",
   "type": "module",
   "sideEffects": false,
