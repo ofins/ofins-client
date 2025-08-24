@@ -8,15 +8,14 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "sourceMap": true,
-    "incremental": true,
     "noFallthroughCasesInSwitch": true,
     "declaration": true,
     "declarationMap": true,
     "resolveJsonModule": true,
-    "composite": true,
     "moduleResolution": "node",
     "jsx": "react-jsx"
   },
+  "include": ["lib"],
   "exclude": [
     "**/node_modules",
     "**/tests",
