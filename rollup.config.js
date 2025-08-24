@@ -18,19 +18,56 @@ const sharedConfig = {
   external: ["react", "react/jsx-runtime", "react-dom"],
 };
 
-export default {
-  input: "src/index.ts",
-  output: [
-    {
-      file: "dist/index.cjs",
-      format: "cjs",
-      sourcemap: true,
-    },
-    {
-      file: "dist/index.js",
-      format: "es",
-      sourcemap: true,
-    },
-  ],
-  ...sharedConfig,
-};
+export default [
+  // Main entry point
+  {
+    input: "src/index.ts",
+    output: [
+      {
+        file: "dist/index.cjs",
+        format: "cjs",
+        sourcemap: true,
+      },
+      {
+        file: "dist/index.js",
+        format: "es",
+        sourcemap: true,
+      },
+    ],
+    ...sharedConfig,
+  },
+  // Core entry point
+  {
+    input: "src/core.ts",
+    output: [
+      {
+        file: "dist/core.cjs",
+        format: "cjs",
+        sourcemap: true,
+      },
+      {
+        file: "dist/core.js",
+        format: "es",
+        sourcemap: true,
+      },
+    ],
+    ...sharedConfig,
+  },
+  // React entry point
+  {
+    input: "src/react.ts",
+    output: [
+      {
+        file: "dist/react.cjs",
+        format: "cjs",
+        sourcemap: true,
+      },
+      {
+        file: "dist/react.js",
+        format: "es",
+        sourcemap: true,
+      },
+    ],
+    ...sharedConfig,
+  },
+];
