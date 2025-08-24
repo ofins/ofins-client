@@ -49,6 +49,6 @@
     "typescript-eslint": "^8.36.0"
   },
   "directories": {
-    "lib": "lib"
+    "src": "src"
   }
 }

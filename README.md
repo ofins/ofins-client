@@ -29,7 +29,7 @@ import { someUtility } from "@ofins/client/lib/utils";
 import {
   useLogin,
   AuthProvider,
-} from "@ofins/client/lib/frameworks/react/auth";
+} from "@ofins/client/src/frameworks/react/auth";
 ```
 
 ## Example: Authentication in React
@@ -38,7 +38,7 @@ import {
 import {
   AuthProvider,
   useLogin,
-} from "@ofins/client/lib/frameworks/react/auth";
+} from "@ofins/client/src/frameworks/react/auth";
 
 function LoginForm() {
   const login = useLogin({
