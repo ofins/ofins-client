@@ -60,5 +60,8 @@
   },
   "directories": {
     "src": "src"
+  },
+  "dependencies": {
+    "@react-oauth/google": "^0.12.2"
   }
 }

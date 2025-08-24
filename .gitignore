@@ -5,3 +5,4 @@ coverage
 .npmrc.local
 *.tgz
 .rollup.cache
+.env
