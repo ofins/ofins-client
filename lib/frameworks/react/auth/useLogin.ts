@@ -75,15 +75,15 @@ const defaultValidate = (
   const errors: Record<string, string> = {};
 
   if (!credentials.email) {
-    errors.message = "Email is required";
+    errors.email = "Email is required";
   } else if (!/\S+@\S+\.\S+/.test(credentials.email)) {
-    errors.message = "Email is invalid";
+    errors.email = "Email is invalid";
   }
 
   if (!credentials.password) {
-    errors.message = "Password is required";
+    errors.password = "Password is required";
   } else if (credentials.password.length < 6) {
-    errors.message = "Password must be at least 6 characters";
+    errors.password = "Password must be at least 6 characters";
   }
 
   return Object.keys(errors).length > 0 ? errors : null;

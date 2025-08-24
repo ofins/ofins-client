@@ -8,7 +8,25 @@ function App() {
   const [count, setCount] = useState(0);
 
   // Test the linked @ofins/client package
-  const register = useRegister({
+  const {
+    credentials,
+    setEmail,
+    setUsername,
+    setPassword,
+    setConfirmPassword,
+    setFirstName,
+    setLastName,
+    handleSubmit,
+    errors,
+  } = useRegister({
+    initialValues: {
+      email: "test@example.com",
+      username: "testuser",
+      password: "password123",
+      confirmPassword: "password123",
+      firstName: "John",
+      lastName: "Doe",
+    },
     onRegister: async (credentials) => {
       console.log("Register called with:", credentials);
       return "mock-token";
@@ -43,29 +61,60 @@ function App() {
           }}
         >
           <h3>Testing @ofins/client package</h3>
-          <p>Email: {register.credentials.email}</p>
-          <p>Username: {register.credentials.username || "not set"}</p>
-          <p>Password: {register.credentials.password}</p>
+          <p>Email: {credentials.email}</p>
+          <p>Username: {credentials.username || "not set"}</p>
+          <p>Password: {credentials.password}</p>
           <input
             type="email"
             placeholder="Email"
-            value={register.credentials.email}
-            onChange={(e) => register.setEmail(e.target.value)}
+            value={credentials.email}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <input
             type="text"
             placeholder="Username"
-            value={register.credentials.username || ""}
-            onChange={(e) => register.setUsername(e.target.value)}
+            value={credentials.username || ""}
+            onChange={(e) => setUsername(e.target.value)}
           />
           <input
             type="password"
             placeholder="Password"
-            value={register.credentials.password}
-            onChange={(e) => register.setPassword(e.target.value)}
+            value={credentials.password}
+            onChange={(e) => setPassword(e.target.value)}
           />
-          <button onClick={() => register.handleSubmit()}>Test Register</button>
+          <input
+            type="password"
+            placeholder="Confirm Password"
+            value={credentials.confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+          />
+          <input
+            type="text"
+            placeholder="First Name"
+            value={credentials.firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+          />
+          <input
+            type="text"
+            placeholder="Last Name"
+            value={credentials.lastName}
+            onChange={(e) => setLastName(e.target.value)}
+          />
+          <button onClick={() => handleSubmit()}>Test Register</button>
+
+          {/* Display errors */}
+          {Object.keys(errors).length > 0 && (
+            <div style={{ marginTop: "10px", color: "red" }}>
+              <h4>Errors:</h4>
+              {Object.entries(errors).map(([field, message]) => (
+                <div key={field}>
+                  <strong>{field}:</strong> {message}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
+        <span>{errors.message}</span>
       </div>
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
