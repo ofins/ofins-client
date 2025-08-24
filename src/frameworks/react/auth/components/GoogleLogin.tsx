@@ -27,7 +27,8 @@ export const GoogleLogin = ({
     });
 
     const data = await response.json();
-    login(data);
+
+    login(data.token);
   };
 
   const handleGoogleError = () => {
