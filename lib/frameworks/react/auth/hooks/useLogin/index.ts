@@ -1,5 +1,5 @@
 import { useState, useCallback, useMemo } from "react";
-import { useAuth } from "./useAuth";
+import { useAuth } from "../useAuth";
 
 export interface LoginCredentials {
   email: string;
@@ -132,7 +132,7 @@ const defaultValidate = (
  * );
  * ```
  */
-export const useLogin = (options: UseLoginOptions = {}): UseLoginReturn => {
+export function useLogin(options: UseLoginOptions = {}): UseLoginReturn {
   const {
     onLogin,
     validate = defaultValidate,
@@ -281,4 +281,4 @@ export const useLogin = (options: UseLoginOptions = {}): UseLoginReturn => {
     validateCredentials,
     clearErrors,
   };
-};
+}

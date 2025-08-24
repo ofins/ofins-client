@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import { useAuth } from "./useAuth";
+import { useAuth } from "../useAuth";
 
 export interface RegisterCredentials {
   email: string;
@@ -131,9 +131,9 @@ const defaultValidate = (
  * });
  * ```
  */
-export const useRegister = (
+export function useRegister(
   options: UseRegisterOptions = {}
-): UseRegisterReturn => {
+): UseRegisterReturn {
   const {
     onRegister,
     validate = defaultValidate,
@@ -338,4 +338,4 @@ export const useRegister = (
     validateCredentials,
     clearErrors,
   };
-};
+}

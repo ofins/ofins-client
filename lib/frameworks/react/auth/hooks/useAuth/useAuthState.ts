@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { AuthInterface } from "../../../core/auth/auth.type";
+import { AuthInterface } from "../../../../../core/auth/auth.type";
 
 /**
  * Hook to subscribe to auth state changes without requiring AuthProvider

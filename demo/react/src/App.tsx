@@ -27,7 +27,14 @@ function App() {
       firstName: "John",
       lastName: "Doe",
     },
-    onRegister: async (credentials) => {
+    onRegister: async (credentials: {
+      email: string;
+      username?: string;
+      password: string;
+      confirmPassword: string;
+      firstName?: string;
+      lastName?: string;
+    }) => {
       console.log("Register called with:", credentials);
       return "mock-token";
     },
@@ -108,7 +115,7 @@ function App() {
               <h4>Errors:</h4>
               {Object.entries(errors).map(([field, message]) => (
                 <div key={field}>
-                  <strong>{field}:</strong> {message}
+                  <strong>{field}:</strong> {String(message)}
                 </div>
               ))}
             </div>

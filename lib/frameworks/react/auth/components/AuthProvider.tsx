@@ -5,12 +5,8 @@ import React, {
   useState,
   ReactNode,
 } from "react";
-import { Auth } from "../../../core/auth/auth";
-import {
-  AuthOptions,
-  AuthInterface,
-  ListenerType,
-} from "../../../core/auth/auth.type";
+import { Auth } from "../../../../core/auth/auth";
+import { AuthOptions, AuthInterface } from "../../../../core/auth/auth.type";
 
 interface AuthContextType {
   auth: AuthInterface;
