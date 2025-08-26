@@ -1,5 +1,5 @@
 // * CORE EXPORTS
-export { createAuth, Auth } from "./core/auth/auth";
+export { createAuth, Auth } from "./core/auth";
 export {
   type AuthInterface,
   type AuthOptions,
