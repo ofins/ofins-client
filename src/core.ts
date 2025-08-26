@@ -13,6 +13,7 @@ export {
   debounce,
   throttle,
 } from "./core/utils/common";
+
 export {
   isMobileDevice,
   isDesktop,
@@ -21,3 +22,5 @@ export {
   isIOS,
   isLocalhost,
 } from "./core/utils/device";
+
+export { calculateDistance } from "./core/utils/location";
