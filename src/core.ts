@@ -1,4 +1,8 @@
-// * CORE EXPORTS
+/**
+ * CORE
+ */
+
+// Auth
 export { createAuth, Auth } from "./core/auth";
 export {
   type AuthInterface,
@@ -6,7 +10,18 @@ export {
   type ListenerType,
 } from "./core/auth/auth.type";
 
-// * UTILS EXPORTS
+// Location
+export { Location } from "./core/location";
+export {
+  type LocationOptions,
+  type CachedLocation,
+  type ILocation,
+} from "./core/location/location.type";
+
+/**
+ * UTIL EXPORTS
+ */
+
 export {
   sleep,
   toggleFullScreen,
