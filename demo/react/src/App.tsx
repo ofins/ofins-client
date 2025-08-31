@@ -4,6 +4,7 @@ import viteLogo from "/vite.svg";
 import "./App.css";
 import { useRegister } from "@ofins/client/react";
 import LoginWithGoogle from "./components/LoginWithGoogle";
+import Location from "./components/Location";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -53,6 +54,7 @@ function App() {
       </div>
       <h1>Vite + React</h1>
       <LoginWithGoogle />
+      <Location />
       <div className="card">
         <button onClick={() => setCount((count) => count + 1)}>
           count is {count}
