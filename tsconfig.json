@@ -3,6 +3,7 @@
   "compilerOptions": {
     "outDir": "dist",
     "declarationDir": "dist/types",
-    "sourceMap": true
+    "sourceMap": true,
+    "ignoreDeprecations": "6.0"
   }
 }
