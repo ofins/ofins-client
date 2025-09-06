@@ -44,8 +44,13 @@ export const useLocation = (options: UseLocationOptions = {}) => {
     ...locationOptions
   } = options;
 
+  const log = (...args: any[]) => {
+    if (debug) {
+      console.log("[useLocation]", ...args);
+    }
+  };
+
   const locationInstance = useRef<Location | null>(null);
-  const isMounted = useRef(true);
 
   const [state, setState] = useState<LocationState>({
     location: null,
@@ -57,19 +62,9 @@ export const useLocation = (options: UseLocationOptions = {}) => {
     permissionState: null,
   });
 
-  const log = (...args: any[]) => {
-    if (debug) {
-      console.log("[useLocation]", ...args);
-    }
-  };
-
   // initialize location instance
   useEffect(() => {
     locationInstance.current = new Location(locationOptions);
-
-    return () => {
-      isMounted.current = false;
-    };
   }, []);
 
   const getLocation = async () => {
@@ -86,7 +81,7 @@ export const useLocation = (options: UseLocationOptions = {}) => {
     try {
       // get cached first
       const cached = locationInstance.current.getCached();
-      if (cached && isMounted.current) {
+      if (cached) {
         setState((prev) => ({
           ...prev,
           location: cached,
@@ -95,31 +90,29 @@ export const useLocation = (options: UseLocationOptions = {}) => {
         }));
       }
 
+      log("Pulling fresh location data...");
       const location = await locationInstance.current.pull();
-      if (isMounted.current) {
-        setState((prev) => ({
-          ...prev,
-          location,
-          loading: false,
-          error: null,
-          isFromCache: false,
-          lastFetchTime: Date.now(),
-        }));
+      log("Fresh location data received:", location);
+      setState((prev) => ({
+        ...prev,
+        location,
+        loading: false,
+        error: null,
+        isFromCache: false,
+        lastFetchTime: Date.now(),
+      }));
 
-        onSuccess?.(location);
-      }
+      onSuccess?.(location);
     } catch (error) {
-      if (isMounted.current) {
-        const err =
-          error instanceof Error ? error : new Error("Failed to get location");
-        log("Location fetch error", err);
-        setState((prev) => ({
-          ...prev,
-          loading: false,
-          error: err,
-        }));
-        onError?.(err);
-      }
+      const err =
+        error instanceof Error ? error : new Error("Failed to get location");
+      log("Location fetch error", err);
+      setState((prev) => ({
+        ...prev,
+        loading: false,
+        error: err,
+      }));
+      onError?.(err);
     }
   };
 
@@ -137,30 +130,26 @@ export const useLocation = (options: UseLocationOptions = {}) => {
     try {
       const location = await locationInstance.current.refresh();
 
-      if (isMounted.current) {
-        log("Location refreshed:", location);
-        setState((prev) => ({
-          ...prev,
-          location,
-          loading: false,
-          error: null,
-          isFromCache: false,
-          lastFetchTime: Date.now(),
-        }));
-        onSuccess?.(location);
-      }
+      log("Location refreshed:", location);
+      setState((prev) => ({
+        ...prev,
+        location,
+        loading: false,
+        error: null,
+        isFromCache: false,
+        lastFetchTime: Date.now(),
+      }));
+      onSuccess?.(location);
     } catch (error) {
-      if (isMounted.current) {
-        const err =
-          error instanceof Error ? error : new Error("Failed to get location");
-        log("Location fetching failed");
-        setState((prev) => ({
-          ...prev,
-          loading: false,
-          error: err,
-        }));
-        onError?.(err);
-      }
+      const err =
+        error instanceof Error ? error : new Error("Failed to get location");
+      log("Location fetching failed");
+      setState((prev) => ({
+        ...prev,
+        loading: false,
+        error: err,
+      }));
+      onError?.(err);
     }
   };
 
@@ -180,6 +169,7 @@ export const useLocation = (options: UseLocationOptions = {}) => {
   // Auto-fetch on mount
   useEffect(() => {
     if (autoFetch) {
+      log("Auto-fetching location...");
       getLocation();
     }
   }, [autoFetch]);
